@@ -24,11 +24,10 @@ def health_check():
 
 @app.route('/solve', methods=["POST"])
 def solve_captcha():
-    img = request.files['captcha']
-    if img.filename != '':
-        img.filename = 'test.jpg'
-        time.sleep(2)
-        img.save(os.path.join(image_file_path, img.filename))
+    imgURL = request.headers["CAPTCHAURL"]
+    if imgURL != '':
+        urllib.request.urlretrieve(imgURL,  "amazon-captcha-solver/test.jpg")
+        #img.save(os.path.join(image_file_path, img.filename))
         captcha_output = captchaSolver.solve()
     else:
         captcha_output = "Image file invalid! Please try again."
